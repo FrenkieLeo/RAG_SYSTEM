@@ -1,0 +1,12 @@
+[project]
+name = "pdf-batch-locker"
+version = "0.1.0"
+description = "Batch encrypt PDF files and restrict common permissions with a Windows-friendly GUI."
+requires-python = ">=3.10"
+dependencies = [
+    "pypdf>=6.13.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
