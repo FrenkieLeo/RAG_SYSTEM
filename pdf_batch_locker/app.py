@@ -197,7 +197,9 @@ class PdfBatchLockerApp:
         self.start_button.configure(state="disabled")
         self._append_log("准备", Path(self.input_dir.get()), "开始扫描 PDF 文件")
 
-        self.worker = threading.Thread(target=self._run_batch, args=(options,), daemon=True)
+        input_dir = Path(self.input_dir.get().strip())
+        output_dir = Path(self.output_dir.get().strip())
+        self.worker = threading.Thread(target=self._run_batch, args=(input_dir, output_dir, options), daemon=True)
         self.worker.start()
         self.root.after(100, self._poll_events)
 
@@ -244,10 +246,7 @@ class PdfBatchLockerApp:
             recursive=self.recursive.get(),
         )
 
-    def _run_batch(self, options: EncryptionOptions) -> None:
-        input_dir = Path(self.input_dir.get())
-        output_dir = Path(self.output_dir.get())
-
+    def _run_batch(self, input_dir: Path, output_dir: Path, options: EncryptionOptions) -> None:
         def progress(index: int, total: int, result: BatchItemResult) -> None:
             self.events.put(("progress", (index, total, result)))
 
